@@ -1,0 +1,10 @@
+body{
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url(photos/burger\ photo.jpg);
+}
+
+h4{
+     color: aqua;
+}
+
