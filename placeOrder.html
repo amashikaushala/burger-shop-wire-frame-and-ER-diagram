@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Order</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-container">
+                    <h2>Place Order</h2>
+                    <form id="orderForm" onsubmit="placeOrder(); return false;">
+                        <div class="mb-3">
+                            <label for="orderId" class="form-label">Order Id</label>
+                            <input type="text" class="form-control" id="orderId" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="orderDate" class="form-label">Order Date</label>
+                            <input type="text" class="form-control" id="orderDate" required>
+                            
+                        </div>
+                        <div class="mb-3">
+                            <label for="qty" class="form-label">Order Quantity</label>
+                            <input type="id" class="form-control" id="qty" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="burgerId" class="form-label">Burger Id</label>
+                            <input type="id" class="form-control" id="burgerId" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="custId" class="form-label">Customer Id</label>
+                            <input type="id" class="form-control" id="custId" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Amount</label>
+                            <input type="id" class="form-control" id="amount" required>
+                        </div>
+                        
+                        
+                        <button type="submit" class="btn btn-primary">Place Order</button>
+                    </form>
+                </div>
+            </div>
+
+             <!-- Order List Column 
+             <div class="col-md-7">
+                <div class="container mt-4">
+                    <h3 style="background-color: aqua;">Order List</h3>
+                    <input type="text" id="searchInput" placeholder="Search by ID or Phone" class="form-control" oninput="searchOrder(this.value);">
+                    <div class="mt-4">
+                        <table class="table table-striped table-hover customer-table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Order Date</th>
+                                    <th>Order Quantity</th>
+                                    
+                                    <th>Burger Id</th>
+                                    
+                                    <th>Customer Id</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customerTableBody"></tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="back-btn-wrapper">
+                        <button type="button" class="btn btn-warning back-btn" onclick="history.back();">
+                            Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let orderIdCounter = parseInt(localStorage.getItem('orderIdCounter')) || 1; 
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+    
+        function getNextOrderId() {
+            return 'O' + String(orderIdCounter++).padStart(3, '0');
+        }
+    
+        function placeOrder() {
+            const orderDate = document.getElementById("orderDate").value;
+            const qty = document.getElementById("qty").value;
+            const burgerId = document.getElementById("burgerId").value;
+            const custId = document.getElementById("custId").value;
+            const amount = document.getElementById("amount").value;
+    
+            const order = {
+                id: getNextOrderId(),
+                date: orderDate,
+                qty: qty,
+                burgerId: burgerId,
+                custId: custId,
+                amount: amount,
+            };
+    
+            orders.push(order);
+            localStorage.setItem('orders', JSON.stringify(orders));
+            localStorage.setItem('orderIdCounter', orderIdCounter);
+    
+            updateOrderTable();
+            document.getElementById("orderForm").reset();
+        }
+    
+        function updateOrderTable() {
+            const tableBody = document.getElementById("customerTableBody");
+            tableBody.innerHTML = "";
+    
+            orders.forEach((order) => {
+                const row = document.createElement("tr");
+    
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.date}</td>
+                    <td>${order.qty}</td>
+                    <td>${order.burgerId}</td>
+                    <td>${order.custId}</td>
+                    <td>${order.amount}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" onclick="editOrder('${order.id}')">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteOrder('${order.id}')">Delete</button>
+                    </td>
+                `;
+    
+                tableBody.appendChild(row);
+            });
+        }
+    
+        function deleteOrder(orderId) {
+            const index = orders.findIndex(order => order.id === orderId);
+            if (index !== -1) {
+                orders.splice(index, 1);
+                localStorage.setItem('orders', JSON.stringify(orders));
+                updateOrderTable();
+            }
+        }
+    
+        function editOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                document.getElementById("orderDate").value = order.date;
+                document.getElementById("qty").value = order.qty;
+                document.getElementById("burgerId").value = order.burgerId;
+                document.getElementById("custId").value = order.custId;
+                document.getElementById("amount").value = order.amount;
+    
+                deleteOrder(orderId);
+            }
+        }
+    
+        function searchOrder(query) {
+            const tableBody = document.getElementById("customerTableBody");
+            tableBody.innerHTML = "";
+    
+            const filteredOrders = orders.filter(order => 
+                order.id.includes(query) || order.burgerId.includes(query) || order.custId.includes(query)
+            );
+    
+            filteredOrders.forEach((order) => {
+                const row = document.createElement("tr");
+    
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.date}</td>
+                    <td>${order.qty}</td>
+                    <td>${order.burgerId}</td>
+                    <td>${order.custId}</td>
+                    <td>${order.amount}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" onclick="editOrder('${order.id}')">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteOrder('${order.id}')">Delete</button>
+                    </td>
+                `;
+    
+                tableBody.appendChild(row);
+            });
+        }
+    
+        document.addEventListener("DOMContentLoaded", updateOrderTable);
+    </script> -->
+    <div class="back-btn-wrapper">
+        <button type="button" class="btn btn-warning back-btn" onclick="history.back();">
+            Back
+        </button>
+    </div>
+    <script>viewOrder.html</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Order</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-container">
+                    <h2>Place Order</h2>
+                    <form id="orderForm" onsubmit="placeOrder(); return false;">
+                        <div class="mb-3">
+                            <label for="orderId" class="form-label">Order Id</label>
+                            <input type="text" class="form-control" id="orderId" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="orderDate" class="form-label">Order Date</label>
+                            <input type="text" class="form-control" id="orderDate" required>
+                            
+                        </div>
+                        <div class="mb-3">
+                            <label for="qty" class="form-label">Order Quantity</label>
+                            <input type="id" class="form-control" id="qty" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="burgerId" class="form-label">Burger Id</label>
+                            <input type="id" class="form-control" id="burgerId" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="custId" class="form-label">Customer Id</label>
+                            <input type="id" class="form-control" id="custId" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Amount</label>
+                            <input type="id" class="form-control" id="amount" required>
+                        </div>
+                        
+                        
+                        <button type="submit" class="btn btn-primary">Place Order</button>
+                    </form>
+                </div>
+            </div>
+
+            
+    <div class="back-btn-wrapper">
+        <button type="button" class="btn btn-warning back-btn" onclick="history.back();">
+            Back
+        </button>
+    </div>
+    <script>viewOrder.html</script>
+</body>
+</html>

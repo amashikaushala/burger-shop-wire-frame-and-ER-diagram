@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Orders</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h3 style="background-color: aqua; padding: 10px;">Order List</h3>
+        <input type="text" id="searchInput" placeholder="Search by ID or Burger ID" 
+               class="form-control mb-3" oninput="searchOrder(this.value);">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>Order Quantity</th>
+                    <th>Burger ID</th>
+                    <th>Customer ID</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody id="customerTableBody"></tbody>
+        </table>
+        <div class="back-btn-wrapper mt-4">
+            <button type="button" class="btn btn-warning" onclick="history.back();">Back</button>
+        </div>
+    </div>
+
+    <script>
+        // Fetch orders from localStorage
+        const orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+        // Function to populate the order table
+        function updateOrderTable() {
+            const tableBody = document.getElementById('customerTableBody');
+            tableBody.innerHTML = '';
+
+            orders.forEach((order) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.date}</td>
+                    <td>${order.qty}</td>
+                    <td>${order.burgerId}</td>
+                    <td>${order.custId}</td>
+                    <td>${order.amount}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Function to search orders
+        function searchOrder(query) {
+            const tableBody = document.getElementById('customerTableBody');
+            tableBody.innerHTML = '';
+
+            const filteredOrders = orders.filter(order =>
+                order.id.toLowerCase().includes(query.toLowerCase()) ||
+                order.burgerId.toLowerCase().includes(query.toLowerCase())
+            );
+
+            filteredOrders.forEach((order) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.date}</td>
+                    <td>${order.qty}</td>
+                    <td>${order.burgerId}</td>
+                    <td>${order.custId}</td>
+                    <td>${order.amount}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Populate the table on page load
+        document.addEventListener('DOMContentLoaded', updateOrderTable);
+    </script>
+</body>
+</html>

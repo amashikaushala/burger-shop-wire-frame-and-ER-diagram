@@ -1,29 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>homepage</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMnb7UQ6R58C3D3S7FjH7YpLIf3cG2Zf6fUtNe" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 100px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .header-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header-container img {
+            width: 100px; 
+        }
+
+        .header-container h1 {
+            color: rgb(221, 183, 14);
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .card {
+            width: 80%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .back-btn-wrapper {
+            margin-top: 20px;
+        }
+    </style>
 </head>
+
 <body>
-    <div class="container text-center">
-        <div class="row">
-          <div class="col">
-            Column
-          </div>
-          <div class="col">
-            Column
-          </div>
-          <div class="col">
-            Column
-          </div>
+
+    <!-- Header Section -->
+    <div class="header-container">
+        <img src="photos/burger1.jpg" alt="Logo" class="img-fluid">
+        <h1>MOS Burger</h1>
+    </div>
+
+    <div class="card-container">
+        <div class="card">
+            <div class="card-body text-center">
+                <button type="button" class="btn btn-danger btn-lg my-2" onclick="location.href='addCustomer.html';">
+                    <i class="fa-solid fa-users"></i> Customer Management
+                </button>
+                <!-- <button type="button" class="btn btn-danger btn-lg my-2" onclick="location.href='Menu.html';">
+                    <i class="fa-solid fa-warehouse"></i> Store Mangement
+                </button>
+                  <button type="button" class="btn btn-danger btn-lg my-2" onclick="location.href='orders.html';">
+                    <i class="fa-solid fa-box"></i> Orders
+                </button>-->
+                <!-- <button type="button" class="btn btn-danger btn-lg my-2" onclick="location.href='viewItem.html';">
+                    <i class="fa-solid fa-eye"></i> Order Management
+                </button> 
+                <button type="button" class="btn btn-danger btn-lg my-2" onclick="location.href='generateReport.html';">
+                    <i class="fa-solid fa-chart-line"></i>  Report Generating
+                </button>   -->
+                
+                </button>
+            </div>
         </div>
-      </div>
 
+        <!-- Back Button Under the Card -->
+        <div class="back-btn-wrapper">
+            <button type="button" class="btn btn-warning back-btn" onclick="history.back();">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </button>
+        </div>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="app.js"></script>
 </body>
+
 </html>
